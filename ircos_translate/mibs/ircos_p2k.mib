@@ -1,0 +1,211 @@
+-- ircosPing2knock is a sensor from Equicom (http://www.equicom.dp.ua/)
+-- This database defines required oid's and traps for ircosPing2knock sensors used in IRCOS
+
+IRCOS-P2K-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosEquicom
+		FROM IRCOS-ROOT-MIB;
+
+ircosPing2knock MODULE-IDENTITY
+        LAST-UPDATED    "201503051155Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes Ping2Knock sensors used in IRCOS devices."
+ 
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosEquicom 1 }
+		
+--  p2k overall vars		
+
+ircosP2kOverallVars OBJECT IDENTIFIER ::= { ircosPing2knock 1 }
+
+ircosP2kSensorsCount OBJECT-TYPE
+		SYNTAX Integer32 (0..255)
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Number of installed Ping2knock sensors"
+		::= { ircosP2kOverallVars 1 }
+		
+-- p2k sensors table		
+
+ircosP2kSensorsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosP2kSensorsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"This table represents all installed Ping2knock sensors"
+		::= { ircosPing2knock 10 }
+
+ircosP2kSensorsTableEntry OBJECT-TYPE
+		SYNTAX IrcosP2kSensorsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Row of Ping2knock sensor values"
+		INDEX { ircosP2kSensorIndex }
+		::= { ircosP2kSensorsTable 1 }
+		
+IrcosP2kSensorsTableEntry ::= SEQUENCE {
+		ircosP2kSensorIndex	Integer32,
+		ircosP2kSensorAvailable INTEGER,
+		ircosP2kCaseSensorStatus INTEGER,
+		ircosP2kKnockSensorStatus INTEGER,
+		ircosP2kTemperature Integer32,
+		ircosP2kSensorDescr DisplayString
+}
+
+ircosP2kSensorIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of installed Ping2knock sensor"
+		::= { ircosP2kSensorsTableEntry 1 }
+		
+ircosP2kSensorAvailable OBJECT-TYPE
+		SYNTAX INTEGER {
+			notAvailable(0),
+			available(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Ping2knock sensor availability"
+	::= { ircosP2kSensorsTableEntry 2 }	
+	
+ircosP2kCaseSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			badValue(-2),
+			unknown(-1),
+			closed(0),
+			opened(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ping2knock case opened sensor"
+	::= { ircosP2kSensorsTableEntry 3 }	
+
+ircosP2kKnockSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			badValue(-2),
+			unknown(-1),
+			tilt(0),
+			normal(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ping2knock tilt or knock sensor"
+	::= { ircosP2kSensorsTableEntry 4 }	
+
+ircosP2kTemperature OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ping2knock temperature sensor data, Celsius degrees"
+	::= { ircosP2kSensorsTableEntry 5 }	
+
+ircosP2kSensorDescr  OBJECT-TYPE
+		SYNTAX     DisplayString (SIZE(0..255))
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"User-defined string describing the Ping2knock sensor"
+	::= { ircosP2kSensorsTableEntry 6 }
+	
+-- p2k Traps	
+ircosP2kTraps OBJECT IDENTIFIER ::= { ircosPing2knock 2 }
+
+ircosP2kTrapsObject OBJECT IDENTIFIER ::= { ircosP2kTraps 0 }
+
+ircosP2kUnavailable NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some Ping2knock sensor is not responding"
+		::= { ircosP2kTrapsObject 1 }	
+		
+ircosP2kCaseClosed NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Case is closed at one of the Ping2knock sensors"
+		::= { ircosP2kTrapsObject 2 }
+		
+ircosP2kCaseOpened NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Case is opened at one of the Ping2knock sensors"
+		::= { ircosP2kTrapsObject 3 }
+		
+ircosP2kTilt NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Knock/tilt alarm at one of the Ping2knock sensors"
+		::= { ircosP2kTrapsObject 4 }		
+
+ircosP2kTempMax NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Maximum temperature threshold reached atone of the Ping2knock sensors"
+		::= { ircosP2kTrapsObject 5 }
+
+ircosP2kTempMin NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Minimum temperature threshold reached at one of the Ping2knock sensors"
+		::= { ircosP2kTrapsObject 6 }	
+
+-- conformance and groups
+
+ircosP2kConformance OBJECT IDENTIFIER ::= { ircosPing2knock 999 }
+
+ircosP2kGroups OBJECT IDENTIFIER ::= { ircosP2kConformance 1 }
+
+ircosP2kObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosP2kSensorsCount,
+			ircosP2kSensorAvailable,
+			ircosP2kCaseSensorStatus,
+			ircosP2kKnockSensorStatus,
+			ircosP2kTemperature,
+			ircosP2kSensorDescr
+		}
+		STATUS current
+		DESCRIPTION
+			"Ping2knock common variables group"
+		::= { ircosP2kGroups 1 }	
+
+ircosP2kTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosP2kUnavailable,
+			ircosP2kCaseClosed,
+			ircosP2kCaseOpened,
+			ircosP2kTilt,
+			ircosP2kTempMax,
+			ircosP2kTempMin
+		}
+		STATUS current
+		DESCRIPTION
+			"Ping2knock traps group"
+		::= { ircosP2kGroups 2 }
+		
+ircosP2kCompliances OBJECT IDENTIFIER ::= { ircosP2kConformance 2 }
+		
+ircosP2kBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosP2kObjectsGroup, ircosP2kTrapsGroup }
+		::= { ircosP2kCompliances 1 }
+		
+END

@@ -1,0 +1,584 @@
+-- This database defines required oid's and traps for Ircos Clock and Power Distribution devices
+
+IRCOS-CLOPODIS-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosCloPoDis
+		FROM IRCOS-ROOT-MIB;
+
+ircosCloPoDisModule MODULE-IDENTITY
+        LAST-UPDATED    "201808301300Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes Ircos Clock and Power Distribution device."
+        REVISION        "201808301300Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosCloPoDis 1 }
+		
+--  CloPoDis overall vars		
+
+ircosCloPoDisOverallVars OBJECT IDENTIFIER ::= { ircosCloPoDisModule 1 }
+
+ircosCloPoDisDevicesCount OBJECT-TYPE
+		SYNTAX Integer32 (0..255)
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Number of installed Ircos Clock and Power Distribution devices"
+		::= { ircosCloPoDisOverallVars 1 }
+		
+-- CloPoDis sensors table		
+
+ircosCloPoDisSensorsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosCloPoDisSensorsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"This table represents all installed Ircos Clock and Power Distribution sensors"
+		::= { ircosCloPoDisModule 10 }
+
+ircosCloPoDisSensorsTableEntry OBJECT-TYPE
+		SYNTAX IrcosCloPoDisSensorsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Row of Ircos Clock and Power Distribution sensor values"
+		INDEX { ircosCloPoDisDeviceIndex }
+		::= { ircosCloPoDisSensorsTable 1 }
+		
+IrcosCloPoDisSensorsTableEntry ::= SEQUENCE {
+		ircosCloPoDisDeviceIndex	Integer32,
+		ircosCloPoDisDeviceAvailable INTEGER,
+		ircosCloPoDisDeviceDescr DisplayString,
+		ircosCloPoDisInputVoltage Integer32,
+		ircosCloPoDisProcessorTemperature Integer32,
+		ircosCloPoDisOutputVoltage1 Integer32,
+		ircosCloPoDisOutputVoltage2 Integer32,
+		ircosCloPoDisOutputVoltage3 Integer32,
+		ircosCloPoDisOutputVoltage4 Integer32,
+		ircosCloPoDisOutputVoltage5 Integer32,
+		ircosCloPoDisOutputVoltage6 Integer32,
+		ircosCloPoDisOutputVoltage7 Integer32,
+		ircosCloPoDisOutputVoltage8 Integer32,
+		ircosCloPoDisOutputVoltage9 Integer32,
+		ircosCloPoDisOutputVoltage10 Integer32,
+		ircosCloPoDisOutputVoltage11 Integer32,
+		ircosCloPoDisOutputVoltage12 Integer32,
+		ircosCloPoDisOutputAmperage1 Integer32,
+		ircosCloPoDisOutputAmperage2 Integer32,
+		ircosCloPoDisOutputAmperage3 Integer32,
+		ircosCloPoDisOutputAmperage4 Integer32,
+		ircosCloPoDisOutputAmperage5 Integer32,
+		ircosCloPoDisOutputAmperage6 Integer32,
+		ircosCloPoDisOutputAmperage7 Integer32,
+		ircosCloPoDisOutputAmperage8 Integer32,
+		ircosCloPoDisOutputAmperage9 Integer32,
+		ircosCloPoDisOutputAmperage10 Integer32,
+		ircosCloPoDisOutputAmperage11 Integer32,
+		ircosCloPoDisOutputAmperage12 Integer32,
+		ircosCloPoDisChannelMask Integer32,
+		ircosCloPoDisPowerSwitch Integer32
+}
+
+ircosCloPoDisDeviceIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of installed Ircos Clock and Power Distribution device"
+		::= { ircosCloPoDisSensorsTableEntry 1 }
+		
+ircosCloPoDisDeviceAvailable OBJECT-TYPE
+		SYNTAX INTEGER {
+			notAvailable(0),
+			available(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution device availability"
+	::= { ircosCloPoDisSensorsTableEntry 2 }
+
+ircosCloPoDisDeviceDescr  OBJECT-TYPE
+		SYNTAX     DisplayString (SIZE(0..255))
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"User-defined string describing the Ircos Clock and Power Distribution device"
+	::= { ircosCloPoDisSensorsTableEntry 3 }
+
+ircosCloPoDisInputVoltage OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution input voltage, mV"
+	::= { ircosCloPoDisSensorsTableEntry 4 }
+
+ircosCloPoDisProcessorTemperature  OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "C"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution processor temperature"
+	::= { ircosCloPoDisSensorsTableEntry 5 }
+
+ircosCloPoDisOutputVoltage1 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 1, mV"
+	::= { ircosCloPoDisSensorsTableEntry 6 }
+ircosCloPoDisOutputVoltage2 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 2, mV"
+	::= { ircosCloPoDisSensorsTableEntry 7 }
+ircosCloPoDisOutputVoltage3 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 3, mV"
+	::= { ircosCloPoDisSensorsTableEntry 8 }
+ircosCloPoDisOutputVoltage4 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 4, mV"
+	::= { ircosCloPoDisSensorsTableEntry 9 }
+ircosCloPoDisOutputVoltage5 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 5, mV"
+	::= { ircosCloPoDisSensorsTableEntry 10 }
+ircosCloPoDisOutputVoltage6 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 6, mV"
+	::= { ircosCloPoDisSensorsTableEntry 11 }
+ircosCloPoDisOutputVoltage7 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 7, mV"
+	::= { ircosCloPoDisSensorsTableEntry 12 }
+ircosCloPoDisOutputVoltage8 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 8, mV"
+	::= { ircosCloPoDisSensorsTableEntry 13 }
+ircosCloPoDisOutputVoltage9 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 9, mV"
+	::= { ircosCloPoDisSensorsTableEntry 14 }
+ircosCloPoDisOutputVoltage10 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 10, mV"
+	::= { ircosCloPoDisSensorsTableEntry 15 }
+ircosCloPoDisOutputVoltage11 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 11, mV"
+	::= { ircosCloPoDisSensorsTableEntry 16 }
+ircosCloPoDisOutputVoltage12 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mV"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output voltage for module 12, mV"
+	::= { ircosCloPoDisSensorsTableEntry 17 }
+
+
+ircosCloPoDisOutputAmperage1 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 1, mA"
+	::= { ircosCloPoDisSensorsTableEntry 18 }
+ircosCloPoDisOutputAmperage2 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 2, mA"
+	::= { ircosCloPoDisSensorsTableEntry 19 }
+ircosCloPoDisOutputAmperage3 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 3, mA"
+	::= { ircosCloPoDisSensorsTableEntry 20 }
+ircosCloPoDisOutputAmperage4 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 4, mA"
+	::= { ircosCloPoDisSensorsTableEntry 21 }
+ircosCloPoDisOutputAmperage5 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 5, mA"
+	::= { ircosCloPoDisSensorsTableEntry 22 }
+ircosCloPoDisOutputAmperage6 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 6, mA"
+	::= { ircosCloPoDisSensorsTableEntry 23 }
+ircosCloPoDisOutputAmperage7 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 7, mA"
+	::= { ircosCloPoDisSensorsTableEntry 24 }
+ircosCloPoDisOutputAmperage8 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 8, mA"
+	::= { ircosCloPoDisSensorsTableEntry 25 }
+ircosCloPoDisOutputAmperage9 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 9, mA"
+	::= { ircosCloPoDisSensorsTableEntry 26 }
+ircosCloPoDisOutputAmperage10 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 10, mA"
+	::= { ircosCloPoDisSensorsTableEntry 27 }
+ircosCloPoDisOutputAmperage11 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 11, mA"
+	::= { ircosCloPoDisSensorsTableEntry 28 }
+ircosCloPoDisOutputAmperage12 OBJECT-TYPE
+		SYNTAX Integer32
+		UNITS "mA"
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution output amperage for module 12, mA"
+	::= { ircosCloPoDisSensorsTableEntry 29 }
+
+ircosCloPoDisChannelMask OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution mask of powered on channels"
+	::= { ircosCloPoDisSensorsTableEntry 30 }
+
+
+ircosCloPoDisPowerSwitch  OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Set to positive number of module to turn on, to negative number of module to turn off"
+	::= { ircosCloPoDisSensorsTableEntry 31 }
+
+
+
+
+
+-- CloPoDis Traps
+ircosCloPoDisTraps OBJECT IDENTIFIER ::= { ircosCloPoDisModule 2 }
+
+ircosCloPoDisTrapsObject OBJECT IDENTIFIER ::= { ircosCloPoDisTraps 0 }
+
+ircosCloPoDisUnavailableTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some Ircos Clock and Power Distribution device is not responding"
+		::= { ircosCloPoDisTrapsObject 1 }
+
+ircosCloPoDisInputVoltageTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Input voltage is out of bounds"
+		::= { ircosCloPoDisTrapsObject 2 }
+
+ircosCloPoDisProcessorTemperatureTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Processor temparature is out of bounds"
+		::= { ircosCloPoDisTrapsObject 3 }
+
+ircosCloPoDisVoltage1Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 1 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 4 }
+ircosCloPoDisVoltage2Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 2 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 5 }
+ircosCloPoDisVoltage3Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 3 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 6 }
+ircosCloPoDisVoltage4Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 4 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 7 }
+ircosCloPoDisVoltage5Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 5 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 8 }
+ircosCloPoDisVoltage6Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 6 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 9 }
+ircosCloPoDisVoltage7Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 7 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 10 }
+ircosCloPoDisVoltage8Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 8 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 11 }
+ircosCloPoDisVoltage9Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 9 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 12 }
+ircosCloPoDisVoltage10Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 10 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 13 }
+ircosCloPoDisVoltage11Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 11 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 14 }
+ircosCloPoDisVoltage12Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Voltage for device 12 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 15 }
+
+ircosCloPoDisAmperage1Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 1 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 16 }
+ircosCloPoDisAmperage2Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 2 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 17 }
+ircosCloPoDisAmperage3Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 3 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 18 }
+ircosCloPoDisAmperage4Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 4 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 19 }
+ircosCloPoDisAmperage5Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 5 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 20 }
+ircosCloPoDisAmperage6Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 6 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 21 }
+ircosCloPoDisAmperage7Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 7 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 22 }
+ircosCloPoDisAmperage8Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 8 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 23 }
+ircosCloPoDisAmperage9Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 9 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 24 }
+ircosCloPoDisAmperage10Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 10 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 25 }
+ircosCloPoDisAmperage11Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 11 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 26 }
+ircosCloPoDisAmperage12Trap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Amperage for device 12 is out of bounds"
+		::= { ircosCloPoDisTrapsObject 27 }
+
+-- conformance and groups
+
+ircosCloPoDisConformance OBJECT IDENTIFIER ::= { ircosCloPoDisModule 999 }
+
+ircosCloPoDisGroups OBJECT IDENTIFIER ::= { ircosCloPoDisConformance 1 }
+
+ircosCloPoDisObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosCloPoDisDevicesCount,
+			ircosCloPoDisDeviceAvailable,
+			ircosCloPoDisDeviceDescr,
+			ircosCloPoDisInputVoltage,
+			ircosCloPoDisProcessorTemperature,
+			ircosCloPoDisOutputVoltage1,
+			ircosCloPoDisOutputVoltage2,
+			ircosCloPoDisOutputVoltage3,
+			ircosCloPoDisOutputVoltage4,
+			ircosCloPoDisOutputVoltage5,
+			ircosCloPoDisOutputVoltage6,
+			ircosCloPoDisOutputVoltage7,
+			ircosCloPoDisOutputVoltage8,
+			ircosCloPoDisOutputVoltage9,
+			ircosCloPoDisOutputVoltage10,
+			ircosCloPoDisOutputVoltage11,
+			ircosCloPoDisOutputVoltage12,
+			ircosCloPoDisOutputAmperage1,
+			ircosCloPoDisOutputAmperage2,
+			ircosCloPoDisOutputAmperage3,
+			ircosCloPoDisOutputAmperage4,
+			ircosCloPoDisOutputAmperage5,
+			ircosCloPoDisOutputAmperage6,
+			ircosCloPoDisOutputAmperage7,
+			ircosCloPoDisOutputAmperage8,
+			ircosCloPoDisOutputAmperage9,
+			ircosCloPoDisOutputAmperage10,
+			ircosCloPoDisOutputAmperage11,
+			ircosCloPoDisOutputAmperage12,
+			ircosCloPoDisChannelMask,
+			ircosCloPoDisPowerSwitch
+		}
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution common variables group"
+		::= { ircosCloPoDisGroups 1 }	
+
+ircosCloPoDisTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosCloPoDisUnavailableTrap,
+			ircosCloPoDisInputVoltageTrap,
+			ircosCloPoDisProcessorTemperatureTrap,
+			ircosCloPoDisVoltage1Trap,
+			ircosCloPoDisVoltage2Trap,
+			ircosCloPoDisVoltage3Trap,
+			ircosCloPoDisVoltage4Trap,
+			ircosCloPoDisVoltage5Trap,
+			ircosCloPoDisVoltage6Trap,
+			ircosCloPoDisVoltage7Trap,
+			ircosCloPoDisVoltage8Trap,
+			ircosCloPoDisVoltage9Trap,
+			ircosCloPoDisVoltage10Trap,
+			ircosCloPoDisVoltage11Trap,
+			ircosCloPoDisVoltage12Trap,
+			ircosCloPoDisAmperage1Trap,
+			ircosCloPoDisAmperage2Trap,
+			ircosCloPoDisAmperage3Trap,
+			ircosCloPoDisAmperage4Trap,
+			ircosCloPoDisAmperage5Trap,
+			ircosCloPoDisAmperage6Trap,
+			ircosCloPoDisAmperage7Trap,
+			ircosCloPoDisAmperage8Trap,
+			ircosCloPoDisAmperage9Trap,
+			ircosCloPoDisAmperage10Trap,
+			ircosCloPoDisAmperage11Trap,
+			ircosCloPoDisAmperage12Trap
+		}
+		STATUS current
+		DESCRIPTION
+			"Ircos Clock and Power Distribution traps group"
+		::= { ircosCloPoDisGroups 2 }
+		
+ircosCloPoDisCompliances OBJECT IDENTIFIER ::= { ircosCloPoDisConformance 2 }
+		
+ircosCloPoDisBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosCloPoDisObjectsGroup, ircosCloPoDisTrapsGroup }
+		::= { ircosCloPoDisCompliances 1 }
+		
+END

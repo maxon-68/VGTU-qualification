@@ -1,0 +1,589 @@
+-- Defines proxified values from APC UPS Network Management Card 2 / ap9631 (apc.com)
+-- This cards differs only in ability to use two external sensors
+
+IRCOS-APC-EXT2-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosApc
+		FROM IRCOS-ROOT-MIB;
+
+ircosApcExt2 MODULE-IDENTITY
+        LAST-UPDATED    "201903150852Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes APC UPS Network Management Card 2 / ap9631 devices used in IRCOS."
+
+        REVISION        "201903150852Z"
+        DESCRIPTION     "Gauge usages changed to Integer32"
+
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosApc 1 }
+
+-- overall vars
+
+overallVars OBJECT IDENTIFIER ::= { ircosApcExt2 1 }
+
+ircosApcExt2DevCount OBJECT-TYPE
+		SYNTAX Integer32 (0..255)
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Number of installed APC UPS devices with NMC2 or ap9631 cards"
+		::= { overallVars 1 }
+
+-- thresholds table
+
+
+		
+-- table
+
+ircosApcExt2DevTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosApcExt2DevTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+		"This table represents all installed APC devices with NMC2 or ap8631 cards"
+		::= { ircosApcExt2 10 }
+
+ircosApcExt2DevTableEntry OBJECT-TYPE
+		SYNTAX IrcosApcExt2DevTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+		"Row of APC UPS NMC2 or ap8631 values"
+		INDEX { ircosApcExt2RowIndex }
+		::= { ircosApcExt2DevTable 1 }
+		
+IrcosApcExt2DevTableEntry ::= SEQUENCE {
+		ircosApcExt2RowIndex	Integer32,
+		ircosApcExt2DevDescr  DisplayString,
+		ircosApcExt2AvailableStatus INTEGER,
+		ircosApcExt2CaseSensorStatus INTEGER,
+		ircosApcExt2TempSensorValue Integer32,
+		ircosApcExt2TiltSensorStatus INTEGER,
+		ircosApcExt2InputLineVoltage Integer32,
+		ircosApcExt2OutputLineVoltage Integer32,
+		ircosApcExt2BatteryCapacity Integer32,
+		ircosApcExt2BatteryTemperature Integer32,
+		ircosApcExt2BatteryTimeLeft Integer32,
+		ircosApcExt2PowerStatus INTEGER
+}
+
+-- table items
+
+ircosApcExt2RowIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+		"Index of installed Smartpack S UPS device"
+		::= { ircosApcExt2DevTableEntry 1 }
+		
+ircosApcExt2DevDescr  OBJECT-TYPE
+	SYNTAX     DisplayString (SIZE(0..255))
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION 
+		"User-defined string describing this APC UPS device"
+	::= { ircosApcExt2DevTableEntry 2 }
+
+ircosApcExt2AvailableStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			notAvailable(0),
+			available(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Availability status"
+	::= { ircosApcExt2DevTableEntry 3 }	
+
+ircosApcExt2CaseSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Case opened sensor"
+	::= { ircosApcExt2DevTableEntry 4 }
+	
+ircosApcExt2TempSensorValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Temperature sensor value (C)"
+		::={ ircosApcExt2DevTableEntry 5 }
+		
+ircosApcExt2TiltSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			normal(0),
+			tiltKnock(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Knock or tilt sensor status"
+		::={ ircosApcExt2DevTableEntry 6 }
+		
+ircosApcExt2InputLineVoltage OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Input voltage value (V)"
+		::={ ircosApcExt2DevTableEntry 7 }
+		
+ircosApcExt2OutputLineVoltage OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Output voltage value (V)"
+		::={ ircosApcExt2DevTableEntry 8 }	
+		
+ircosApcExt2BatteryCapacity OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Battery capacity value (%)"
+		::={ ircosApcExt2DevTableEntry 9 }			
+		
+ircosApcExt2BatteryTemperature OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Battery temperature value (C)"
+		::={ ircosApcExt2DevTableEntry 10 }
+		
+ircosApcExt2BatteryTimeLeft OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Battery run time remaining value (Min)"
+		::={ ircosApcExt2DevTableEntry 11 }
+
+ircosApcExt2PowerStatus OBJECT-TYPE
+	SYNTAX INTEGER  {
+			unknown(1),
+			onLine(2),
+			onBattery(3),
+			onSmartBoost(4),
+			timedSleeping(5),
+			softwareBypass(6),
+			off(7),
+			rebooting(8),
+			switchedBypass(9),
+			hardwareFailureBypass(10),
+			sleepingUntilPowerReturn(11),
+			onSmartTrim(12),
+			ecoMode(13),
+			hotStandby(14),
+			onBatteryTest(15),
+			emergencyStaticBypass(16),
+			staticBypassStandby(17),
+			powerSavingMode(18),
+			spotMode(19),
+			eConversion(20)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"The current state of UPS"
+		::={ ircosApcExt2DevTableEntry 12 }	
+
+
+-- table with thresholds
+
+ircosApcExt2ThresholdsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosApcExt2ThresholdsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+		"This table contains all thresholds for installed APC devices with NMC2 or ap8631 cards"
+		::= { ircosApcExt2 11 }
+
+ircosApcExt2ThresholdsTableEntry OBJECT-TYPE
+		SYNTAX IrcosApcExt2ThresholdsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+		"Row of APC UPS NMC2 or ap8631 thresholds"
+		INDEX { ircosApcExt2ThrRowIndex }
+		::= { ircosApcExt2ThresholdsTable 1 }
+		
+IrcosApcExt2ThresholdsTableEntry ::= SEQUENCE {
+		ircosApcExt2ThrRowIndex	Integer32,
+		ircosApcExt2ThrDevDescr  DisplayString,
+		ircosApcExt2ThrTempMin Integer32,
+		ircosApcExt2ThrTempMax Integer32,
+		ircosApcExt2ThrInputVMin Integer32,
+		ircosApcExt2ThrInputVMax Integer32,
+		ircosApcExt2ThrOutputVMin Integer32,
+		ircosApcExt2ThrOutputVMax Integer32,
+		ircosApcExt2ThrBatteryCap Integer32,
+		ircosApcExt2ThrBatteryTempMin Integer32,
+		ircosApcExt2ThrBatteryTempMax Integer32,
+		ircosApcExt2ThrBatteryTimeRem Integer32
+}
+
+-- thresholds table items
+
+ircosApcExt2ThrRowIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+		"Index of installed Smartpack S UPS device"
+		::= { ircosApcExt2ThresholdsTableEntry 1 }
+		
+ircosApcExt2ThrDevDescr  OBJECT-TYPE
+	SYNTAX     DisplayString (SIZE(0..255))
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION 
+		"User-defined string describing this APC UPS device"
+	::= { ircosApcExt2ThresholdsTableEntry 2 }
+
+ircosApcExt2ThrTempMin OBJECT-TYPE
+		SYNTAX Integer32 (-274..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Minimum temperature threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 3 }
+
+ircosApcExt2ThrTempMax OBJECT-TYPE
+		SYNTAX Integer32 (-274..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Maximum temperature threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 4 }
+		
+ircosApcExt2ThrInputVMin OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Minimum input voltage threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 5 }		
+
+ircosApcExt2ThrInputVMax OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Maximum input voltage threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 6 }		
+
+ircosApcExt2ThrOutputVMin OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Minimum output voltage threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 7 }		
+
+ircosApcExt2ThrOutputVMax OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Maximum output voltage threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 8 }	
+
+ircosApcExt2ThrBatteryCap OBJECT-TYPE
+		SYNTAX Integer32 (0..100)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Battery capacity thresholds"
+		::= { ircosApcExt2ThresholdsTableEntry 9 }	
+		
+ircosApcExt2ThrBatteryTempMin OBJECT-TYPE
+		SYNTAX Integer32 (-274..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Minimum battery temperature threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 10 }
+		
+ircosApcExt2ThrBatteryTempMax OBJECT-TYPE
+		SYNTAX Integer32 (-274..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Maximum battery temperature threshold"
+		::= { ircosApcExt2ThresholdsTableEntry 11 }
+		
+ircosApcExt2ThrBatteryTimeRem OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+		"Battery remaining time threshold (in minutes)"
+		::= { ircosApcExt2ThresholdsTableEntry 12 }
+
+-- table with extra parameters
+
+ircosApcExt2ExtraTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosApcExt2ExtraTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"This table contains available exatra parameters for installed APC devices with NMC2 or ap8631 cards"
+		::= { ircosApcExt2 12 }
+
+ircosApcExt2ExtraTableEntry OBJECT-TYPE
+		SYNTAX IrcosApcExt2ExtraTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Row of APC UPS NMC2 or ap8631 extra parameters"
+		INDEX { ircosApcExt2ExtraRowIndex }
+		::= { ircosApcExt2ExtraTable 1 }
+
+IrcosApcExt2ExtraTableEntry ::= SEQUENCE {
+		ircosApcExt2ExtraRowIndex Integer32,
+		ircosApcExt2ExtraUpsBasicIdentModel DisplayString,
+		ircosApcExt2ExtraUpsBasicIdentName DisplayString,
+		ircosApcExt2ExtraUpsAdvIdentFirmwareRevision DisplayString,
+		ircosApcExt2ExtraUpsAdvIdentDateOfManufacture DisplayString,
+		ircosApcExt2ExtraUpsAdvIdentSerialNumber DisplayString,
+		ircosApcExt2ExtraUpsAdvIdentFirmwareRevision2 DisplayString,
+		ircosApcExt2ExtraUpsAdvIdentSkuNumber DisplayString,
+		ircosApcExt2ExtraUpsBasicBatteryStatus INTEGER
+}
+
+-- extra table items
+
+ircosApcExt2ExtraRowIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of installed Smartpack S UPS device"
+		::= { ircosApcExt2ExtraTableEntry 1 }
+		
+
+ircosApcExt2ExtraUpsBasicIdentModel OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"The UPS model name"
+		::= { ircosApcExt2ExtraTableEntry 2 }
+
+
+ircosApcExt2ExtraUpsBasicIdentName OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"An 8 byte ID string identifying the UPS."
+		::= { ircosApcExt2ExtraTableEntry 3 }
+
+
+ircosApcExt2ExtraUpsAdvIdentFirmwareRevision OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"The firmware revision of the UPS system microprocessor."
+		::= { ircosApcExt2ExtraTableEntry 4 }
+
+ircosApcExt2ExtraUpsAdvIdentDateOfManufacture OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"The date when the UPS was manufactured in mm/dd/yy (or yyyy) format."
+		::= { ircosApcExt2ExtraTableEntry 5 }
+
+
+ircosApcExt2ExtraUpsAdvIdentSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Serial number of the UPS internal microprocessor."
+		::= { ircosApcExt2ExtraTableEntry 6 }
+
+ircosApcExt2ExtraUpsAdvIdentFirmwareRevision2 OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"The firmware revision of a UPS system co-microprocessor."
+		::= { ircosApcExt2ExtraTableEntry 7 }
+
+ircosApcExt2ExtraUpsAdvIdentSkuNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"The firmware revision of a UPS system co-microprocessor."
+		::= { ircosApcExt2ExtraTableEntry 8 }
+		
+ircosApcExt2ExtraUpsBasicBatteryStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(1),
+			batteryNormal(2),
+			batteryLow(3),
+			batteryInFaultCondition(4)
+			}
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"The status of the UPS batteries."
+   ::= { ircosApcExt2ExtraTableEntry 9 }
+   
+		
+-- traps
+		
+ircosApcExt2Traps OBJECT IDENTIFIER ::= { ircosApcExt2 2 }
+
+ircosApcExt2TrapsObject OBJECT IDENTIFIER ::= { ircosApcExt2Traps 0 }
+
+ircosApcExt2AvailabilityStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 availability status has changed"
+		::= { ircosApcExt2TrapsObject 1 }	
+
+ircosApcExt2CaseSensorStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 case sensor status has changed"
+		::= { ircosApcExt2TrapsObject 2 }
+		
+ircosApcExt2TempSensorValueTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 temperature sensor value trap"
+		::= { ircosApcExt2TrapsObject 3 }
+		
+ircosApcExt2TiltSensorStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 tilt sensor status has changed"
+		::= { ircosApcExt2TrapsObject 4 }	
+		
+ircosApcExt2InputLineVoltageTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 input line voltage trap"
+		::= { ircosApcExt2TrapsObject 5 }	
+		
+ircosApcExt2OutputLineVoltageTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 output line voltage trap"
+		::= { ircosApcExt2TrapsObject 6 }	
+		
+ircosApcExt2BatteryCapacityTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 battery capacity trap"
+		::= { ircosApcExt2TrapsObject 7 }	
+		
+ircosApcExt2BatteryTemperatureTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 battery temperature trap"
+		::= { ircosApcExt2TrapsObject 8 }	
+		
+ircosApcExt2BatteryTimeLeftTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 time left on battery trap"
+		::= { ircosApcExt2TrapsObject 9 }	
+		
+ircosApcExt2PowerStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some APC UPS NMC2/ap9631 power status changed"
+		::= { ircosApcExt2TrapsObject 10 }	
+
+-- conformance and groups
+
+ircosApcExt2Conformance OBJECT IDENTIFIER ::= { ircosApcExt2 999 }
+
+ircosApcExt2Groups OBJECT IDENTIFIER ::= { ircosApcExt2Conformance 1 }
+
+ircosApcExt2ObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosApcExt2DevCount,
+			
+			ircosApcExt2DevDescr,
+			ircosApcExt2AvailableStatus,
+			ircosApcExt2CaseSensorStatus,
+			ircosApcExt2TempSensorValue,
+			ircosApcExt2TiltSensorStatus,
+			ircosApcExt2InputLineVoltage,
+			ircosApcExt2OutputLineVoltage,
+			ircosApcExt2BatteryCapacity,
+			ircosApcExt2BatteryTemperature,
+			ircosApcExt2BatteryTimeLeft,
+			ircosApcExt2PowerStatus,
+			
+			ircosApcExt2ThrDevDescr,
+			ircosApcExt2ThrTempMin,
+			ircosApcExt2ThrTempMax,
+			ircosApcExt2ThrInputVMin,
+			ircosApcExt2ThrInputVMax,
+			ircosApcExt2ThrOutputVMin,
+			ircosApcExt2ThrOutputVMax,
+			ircosApcExt2ThrBatteryCap,
+			ircosApcExt2ThrBatteryTempMin,
+			ircosApcExt2ThrBatteryTempMax,
+			ircosApcExt2ThrBatteryTimeRem
+		}
+		STATUS current
+		DESCRIPTION
+			"APC UPS NMC2/ap9631 common variables group"
+		::= { ircosApcExt2Groups 1 }	
+
+ircosApcExt2TrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosApcExt2AvailabilityStatusChanged,
+			ircosApcExt2CaseSensorStatusChanged,
+			ircosApcExt2TempSensorValueTrap,
+			ircosApcExt2TiltSensorStatusChanged,
+			ircosApcExt2InputLineVoltageTrap,
+			ircosApcExt2OutputLineVoltageTrap,
+			ircosApcExt2BatteryCapacityTrap,
+			ircosApcExt2BatteryTemperatureTrap,
+			ircosApcExt2BatteryTimeLeftTrap,
+			ircosApcExt2PowerStatusChanged
+		}
+		STATUS current
+		DESCRIPTION
+			"APC UPS NMC2/ap9631 traps group"
+		::= { ircosApcExt2Groups 2 }		
+		
+ircosApcExt2Compliances OBJECT IDENTIFIER ::= { ircosApcExt2Conformance 2 }
+		
+ircosApcExt2BasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosApcExt2ObjectsGroup, ircosApcExt2TrapsGroup }
+		::= { ircosApcExt2Compliances 1 }
+		
+END

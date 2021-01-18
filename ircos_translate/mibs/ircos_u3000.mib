@@ -1,0 +1,380 @@
+-- Defines proxified values from UPS U3000-RT
+-- This cards differs only in ability to use two external sensors
+
+IRCOS-U3000-EXT-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosU3000
+		FROM IRCOS-ROOT-MIB;
+		
+ircosU3000Ext MODULE-IDENTITY
+        LAST-UPDATED    "201503051155Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes UPS U3000-RT."
+ 
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosU3000 1 }
+	
+-- overall vars
+
+overallVars OBJECT IDENTIFIER ::= { ircosU3000Ext 1 }
+
+ircosU3000ExtDevCount OBJECT-TYPE
+		SYNTAX Integer32 (0..255)
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Number of installed UPS U3000 devices"
+		::= { overallVars 1 }
+
+-- thresholds table
+
+
+		
+-- table
+
+ircosU3000ExtDevTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosU3000ExtDevTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"This table represents all installed UPS U3000 devices"
+		::= { ircosU3000Ext 10 }
+
+ircosU3000ExtDevTableEntry OBJECT-TYPE
+		SYNTAX IrcosU3000ExtDevTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Row of UPS U3000 values"
+		INDEX { ircosU3000ExtRowIndex }
+		::= { ircosU3000ExtDevTable 1 }
+		
+IrcosU3000ExtDevTableEntry ::= SEQUENCE {
+		ircosU3000ExtRowIndex	Integer32,
+		ircosU3000ExtDevDescr  DisplayString,
+		ircosU3000ExtAvailableStatus Integer32 ,
+		ircosU3000ExtInputLineVoltage Integer32 ,
+		ircosU3000ExtOutputLineVoltage Integer32 ,
+		ircosU3000ExtBatteryCapacity Integer32 ,
+		ircosU3000ExtBatteryTemperature Integer32 ,
+		ircosU3000ExtBatteryTimeLeft Integer32 ,
+		ircosU3000ExtPowerStatus INTEGER 
+}
+
+-- table items
+
+ircosU3000ExtRowIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of installed UPS U3000 devices"
+		::= { ircosU3000ExtDevTableEntry 1 }
+		
+ircosU3000ExtDevDescr  OBJECT-TYPE
+		SYNTAX     DisplayString (SIZE(0..255))
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"User-defined string describing this UPS device"
+		::= { ircosU3000ExtDevTableEntry 2 }
+
+ircosU3000ExtAvailableStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			notAvailable(0),
+			available(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Availability status"
+		::= { ircosU3000ExtDevTableEntry 3 }	
+		
+ircosU3000ExtInputLineVoltage OBJECT-TYPE
+		SYNTAX Integer32 
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Input voltage value (V)"
+		::={ ircosU3000ExtDevTableEntry 4 }
+		
+ircosU3000ExtOutputLineVoltage OBJECT-TYPE
+		SYNTAX Integer32 
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Output voltage value (V)"
+		::={ ircosU3000ExtDevTableEntry 5 }	
+		
+ircosU3000ExtBatteryCapacity OBJECT-TYPE
+		SYNTAX Integer32 
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Battery capacity value (%)"
+		::={ ircosU3000ExtDevTableEntry 6 }			
+		
+ircosU3000ExtBatteryTemperature OBJECT-TYPE
+		SYNTAX Integer32 
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Battery temperature value (C)"
+		::={ ircosU3000ExtDevTableEntry 7 }
+		
+ircosU3000ExtBatteryTimeLeft OBJECT-TYPE
+		SYNTAX Integer32 
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Battery run time remaining value (Min)"
+		::={ ircosU3000ExtDevTableEntry 8 }
+
+ircosU3000ExtPowerStatus OBJECT-TYPE
+		SYNTAX  INTEGER  {
+			unknown(1),
+			onLine(2),
+			onBattery(3),
+			onBoost(4),
+			sleeping(5),
+			onBypass(6),
+			rebooting(7),
+			standBy(8),
+			onBuck(9) }
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"The current state of UPS"
+		::={ ircosU3000ExtDevTableEntry 9 }	
+
+
+-- table with thresholds
+
+ircosU3000ExtThresholdsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosU3000ExtThresholdsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"This table contains all thresholds for installed UPS U3000 devices"
+		::= { ircosU3000Ext 11 }
+
+ircosU3000ExtThresholdsTableEntry OBJECT-TYPE
+		SYNTAX IrcosU3000ExtThresholdsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Row of APC UPS NMC2 or ap8631 thresholds"
+		INDEX { ircosU3000ExtThrRowIndex }
+		::= { ircosU3000ExtThresholdsTable 1 }
+		
+IrcosU3000ExtThresholdsTableEntry ::= SEQUENCE {
+		ircosU3000ExtThrRowIndex	Integer32,
+		ircosU3000ExtThrDevDescr  DisplayString,
+		ircosU3000ExtThrInputVMin Integer32,
+		ircosU3000ExtThrInputVMax Integer32,
+		ircosU3000ExtThrOutputVMin Integer32,
+		ircosU3000ExtThrOutputVMax Integer32,
+		ircosU3000ExtThrBatteryCap Integer32,
+		ircosU3000ExtThrBatteryTempMin Integer32,
+		ircosU3000ExtThrBatteryTempMax Integer32,
+		ircosU3000ExtThrBatteryTimeRem Integer32
+}
+
+-- thresholds table items
+
+ircosU3000ExtThrRowIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of installed U3000 devices"
+		::= { ircosU3000ExtThresholdsTableEntry 1 }
+		
+ircosU3000ExtThrDevDescr  OBJECT-TYPE
+		SYNTAX     DisplayString (SIZE(0..255))
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"User-defined string describing this UPS U3000 device"
+		::= { ircosU3000ExtThresholdsTableEntry 2 }
+
+ircosU3000ExtThrInputVMin OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Minimum input voltage threshold"
+		::= { ircosU3000ExtThresholdsTableEntry 3 }		
+
+ircosU3000ExtThrInputVMax OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Maximum input voltage threshold"
+		::= { ircosU3000ExtThresholdsTableEntry 4 }		
+
+ircosU3000ExtThrOutputVMin OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Minimum output voltage threshold"
+		::= { ircosU3000ExtThresholdsTableEntry 5 }		
+
+ircosU3000ExtThrOutputVMax OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Maximum output voltage threshold"
+		::= { ircosU3000ExtThresholdsTableEntry 6 }	
+
+ircosU3000ExtThrBatteryCap OBJECT-TYPE
+		SYNTAX Integer32 (0..100)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Battery capacity thresholds"
+		::= { ircosU3000ExtThresholdsTableEntry 7 }	
+		
+ircosU3000ExtThrBatteryTempMin OBJECT-TYPE
+		SYNTAX Integer32 (-274..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Minimum battery temperature threshold"
+		::= { ircosU3000ExtThresholdsTableEntry 8 }
+		
+ircosU3000ExtThrBatteryTempMax OBJECT-TYPE
+		SYNTAX Integer32 (-274..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Maximum battery temperature threshold"
+		::= { ircosU3000ExtThresholdsTableEntry 9 }
+		
+ircosU3000ExtThrBatteryTimeRem OBJECT-TYPE
+		SYNTAX Integer32 (0..2147483647)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Battery remaining time threshold (in minutes)"
+		::= { ircosU3000ExtThresholdsTableEntry 10 }
+		
+-- traps
+		
+ircosU3000ExtTraps OBJECT IDENTIFIER ::= { ircosU3000Ext 2 }
+
+ircosU3000ExtTrapsObject OBJECT IDENTIFIER ::= { ircosU3000ExtTraps 0 }
+
+ircosU3000ExtAvailabilityStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 availability status has changed"
+		::= { ircosU3000ExtTrapsObject 1 }	
+
+ircosU3000ExtInputLineVoltageTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 input line voltage trap"
+		::= { ircosU3000ExtTrapsObject 2 }	
+		
+ircosU3000ExtOutputLineVoltageTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 output line voltage trap"
+		::= { ircosU3000ExtTrapsObject 3 }	
+		
+ircosU3000ExtBatteryCapacityTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 battery capacity trap"
+		::= { ircosU3000ExtTrapsObject 4 }	
+		
+ircosU3000ExtBatteryTemperatureTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 battery temperature trap"
+		::= { ircosU3000ExtTrapsObject 5 }	
+		
+ircosU3000ExtBatteryTimeLeftTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 time left on battery trap"
+		::= { ircosU3000ExtTrapsObject 6 }	
+		
+ircosU3000ExtPowerStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some UPS U3000 power status changed"
+		::= { ircosU3000ExtTrapsObject 7 }	
+
+-- conformance and groups
+
+ircosU3000ExtConformance OBJECT IDENTIFIER ::= { ircosU3000Ext 999 }
+
+ircosU3000ExtGroups OBJECT IDENTIFIER ::= { ircosU3000ExtConformance 1 }
+
+ircosU3000ExtObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosU3000ExtDevCount,
+			
+			ircosU3000ExtDevDescr,
+			ircosU3000ExtAvailableStatus,
+			ircosU3000ExtInputLineVoltage,
+			ircosU3000ExtOutputLineVoltage,
+			ircosU3000ExtBatteryCapacity,
+			ircosU3000ExtBatteryTemperature,
+			ircosU3000ExtBatteryTimeLeft,
+			ircosU3000ExtPowerStatus,
+			
+			ircosU3000ExtThrDevDescr,
+			ircosU3000ExtThrInputVMin,
+			ircosU3000ExtThrInputVMax,
+			ircosU3000ExtThrOutputVMin,
+			ircosU3000ExtThrOutputVMax,
+			ircosU3000ExtThrBatteryCap,
+			ircosU3000ExtThrBatteryTempMin,
+			ircosU3000ExtThrBatteryTempMax,
+			ircosU3000ExtThrBatteryTimeRem
+		}
+		STATUS current
+		DESCRIPTION
+			"UPS U3000 common variables group"
+		::= { ircosU3000ExtGroups 1 }	
+
+ircosU3000ExtTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosU3000ExtAvailabilityStatusChanged,
+			ircosU3000ExtInputLineVoltageTrap,
+			ircosU3000ExtOutputLineVoltageTrap,
+			ircosU3000ExtBatteryCapacityTrap,
+			ircosU3000ExtBatteryTemperatureTrap,
+			ircosU3000ExtBatteryTimeLeftTrap,
+			ircosU3000ExtPowerStatusChanged
+		}
+		STATUS current
+		DESCRIPTION
+			"UPS U3000 traps group"
+		::= { ircosU3000ExtGroups 2 }		
+		
+ircosU3000ExtCompliances OBJECT IDENTIFIER ::= { ircosU3000ExtConformance 2 }
+		
+ircosU3000ExtBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosU3000ExtObjectsGroup, ircosU3000ExtTrapsGroup }
+		::= { ircosU3000ExtCompliances 1 }
+		
+END

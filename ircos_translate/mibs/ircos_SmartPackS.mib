@@ -1,0 +1,450 @@
+-- Defines proxified values from Eltek Smartpack S (eltek.com)
+
+IRCOS-SMARTPACK-S-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosEltek
+		FROM IRCOS-ROOT-MIB;
+		
+ircosSmartpackS MODULE-IDENTITY
+        LAST-UPDATED    "201503051155Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes Eltek Smartpack S devices used in IRCOS devices."
+ 
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosEltek 1 }
+		
+-- Smartpack S overall vars		
+
+overallVars OBJECT IDENTIFIER ::= { ircosSmartpackS 1 }
+
+ircosSmartpackSInstDevCount OBJECT-TYPE
+		SYNTAX Integer32 (0..255)
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Number of installed Eltek Smartpack S devices"
+		::= { overallVars 1 }
+
+--  Smartpack S sensors table		
+
+ircosSmartpackSDevTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosSmartpackSDevTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+		"This table represents all installed Eltek Smartpack S units"
+		::= { ircosSmartpackS 10 }
+
+ircosSmartpackSDevTableEntry OBJECT-TYPE
+		SYNTAX IrcosSmartpackSDevTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+		"Row of Eltek Smartpack S units values"
+		INDEX { ircosSmartpackSRowIndex }
+		::= { ircosSmartpackSDevTable 1 }
+		
+IrcosSmartpackSDevTableEntry ::= SEQUENCE {
+		ircosSmartpackSRowIndex	Integer32,
+		ircosSmartpackSDevDescr  DisplayString,
+		ircosSmartpackSAvailableStatus INTEGER,
+		ircosSmartpackSMainsVoltageStatus INTEGER,
+		ircosSmartpackSMainsVoltageValue Integer32,
+		ircosSmartpackSCaseSensorStatus INTEGER,
+		ircosSmartpackSBatteryVoltageStatus INTEGER,
+		ircosSmartpackSBatteryRemainingCapacityStatus INTEGER,
+		ircosSmartpackSBatteryTemperaturesStatus INTEGER,
+		ircosSmartpackSBatteryTimeLeftStatus INTEGER,
+		ircosSmartpackSBatteryFusesStatus INTEGER,
+		ircosSmartpackSFilterDetectionStatus INTEGER
+}
+
+ircosSmartpackSRowIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+		"Index of installed Smartpack S UPS device"
+		::= { ircosSmartpackSDevTableEntry 1 }
+		
+ircosSmartpackSDevDescr  OBJECT-TYPE
+	SYNTAX     DisplayString (SIZE(0..255))
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION 
+		"User-defined string describing the Smartpack S device"
+	::= { ircosSmartpackSDevTableEntry 2 }
+	
+ircosSmartpackSAvailableStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			notAvailable(0),
+			available(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Availability status"
+	::= { ircosSmartpackSDevTableEntry 3 }	
+
+ircosSmartpackSMainsVoltageStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Mains voltage status"
+::= { ircosSmartpackSDevTableEntry 4 }	
+
+ircosSmartpackSMainsVoltageValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Mains voltage value (V)"
+::= { ircosSmartpackSDevTableEntry 5 }
+	
+ircosSmartpackSCaseSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Case opened sensor"
+	::= { ircosSmartpackSDevTableEntry 6 }	
+
+ircosSmartpackSBatteryVoltageStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Battery voltage status"
+	::= { ircosSmartpackSDevTableEntry 7 }
+
+ircosSmartpackSBatteryRemainingCapacityStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Battery remaining capacity status"
+	::= { ircosSmartpackSDevTableEntry 8 }	
+	
+ircosSmartpackSBatteryTemperaturesStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Battery temperature status"
+	::= { ircosSmartpackSDevTableEntry 9 }		
+	
+ircosSmartpackSBatteryTimeLeftStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Battery time left status"
+	::= { ircosSmartpackSDevTableEntry 10 }
+	
+ircosSmartpackSBatteryFusesStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Battery fuses status"
+	::= { ircosSmartpackSDevTableEntry 11 }
+
+ircosSmartpackSFilterDetectionStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			error (0),
+			normal (1),
+			minorAlarm (2),
+			majorAlarm (3),
+			disabled (4),
+			disconnected (5),
+			notPresent (6),
+			minorAndMajor (7),
+			majorLow (8),
+			minorLow (9),
+			majorHigh (10),
+			minorHigh (11),
+			event (12),
+			valueVolt (13),
+			valueAmp (14),
+			valueTemp (15),
+			valueUnit (16),
+			valuePerCent (17),
+			critical (18),
+			warning (19)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+		"Battery filter detection status"
+	::= { ircosSmartpackSDevTableEntry 12 }
+
+-- Smartpack S traps
+
+ircosSmartpackSTraps OBJECT IDENTIFIER ::= { ircosSmartpackS 2 }
+
+ircosSmartpackSTrapsObject OBJECT IDENTIFIER ::= { ircosSmartpackSTraps 0 }
+
+ircosSmartpackSAvailabilityStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some Smartpack S device availability status has changed"
+		::= { ircosSmartpackSTrapsObject 1 }		
+		
+ircosSmartpackSMainsVoltageStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S Mains.VoltageStatus has changed"
+		::= { ircosSmartpackSTrapsObject 2 }		
+		
+ircosSmartpackSCaseSensorStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S case sensor status has changed"
+		::= { ircosSmartpackSTrapsObject 3 }		
+		
+ircosSmartpackSBatteryVoltageStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S battery voltage status has changed"
+		::= { ircosSmartpackSTrapsObject 4 }		
+		
+ircosSmartpackSBatteryRemainingCapacityStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S battery remaining capacity status has changed"
+		::= { ircosSmartpackSTrapsObject 5 }		
+		
+ircosSmartpackSBatteryTemperaturesStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S battery temperature status has changed"
+		::= { ircosSmartpackSTrapsObject 6 }		
+		
+ircosSmartpackSBatteryTimeLeftStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S battery time remaining status has changed"
+		::= { ircosSmartpackSTrapsObject 7 }		
+
+ircosSmartpackSBatteryFusesStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S battery fuses status has changed"
+		::= { ircosSmartpackSTrapsObject 8 }		
+
+ircosSmartpackSFilterDetectionStatusChanged NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Smartpack S battery fuses status has changed"
+		::= { ircosSmartpackSTrapsObject 9 }		
+	
+-- conformance and groups
+
+ircosSmartpackSConformance OBJECT IDENTIFIER ::= { ircosSmartpackS 999 }
+
+ircosSmartpackSGroups OBJECT IDENTIFIER ::= { ircosSmartpackSConformance 1 }
+
+ircosSmartpackSObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosSmartpackSInstDevCount,
+			ircosSmartpackSDevDescr,
+			ircosSmartpackSAvailableStatus,
+			ircosSmartpackSMainsVoltageStatus,
+			ircosSmartpackSMainsVoltageValue,
+			ircosSmartpackSCaseSensorStatus,
+			ircosSmartpackSBatteryVoltageStatus,
+			ircosSmartpackSBatteryRemainingCapacityStatus,
+			ircosSmartpackSBatteryTemperaturesStatus,
+			ircosSmartpackSBatteryTimeLeftStatus,
+			ircosSmartpackSBatteryFusesStatus,
+			ircosSmartpackSFilterDetectionStatus
+		}
+		STATUS current
+		DESCRIPTION
+			"Smartpack S common variables group"
+		::= { ircosSmartpackSGroups 1 }	
+
+ircosSmartpackSTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosSmartpackSAvailabilityStatusChanged,
+			ircosSmartpackSMainsVoltageStatusChanged,
+			ircosSmartpackSCaseSensorStatusChanged,
+			ircosSmartpackSBatteryVoltageStatusChanged,
+			ircosSmartpackSBatteryRemainingCapacityStatusChanged,
+			ircosSmartpackSBatteryTemperaturesStatusChanged,
+			ircosSmartpackSBatteryTimeLeftStatusChanged,
+			ircosSmartpackSBatteryFusesStatusChanged,
+			ircosSmartpackSFilterDetectionStatusChanged
+		}
+		STATUS current
+		DESCRIPTION
+			"Smartpack S traps group"
+		::= { ircosSmartpackSGroups 2 }		
+		
+ircosSmartpackSCompliances OBJECT IDENTIFIER ::= { ircosSmartpackSConformance 2 }
+		
+ircosSmartpackSBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosSmartpackSObjectsGroup, ircosSmartpackSTrapsGroup }
+		::= { ircosSmartpackSCompliances 1 }
+		
+END

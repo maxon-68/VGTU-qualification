@@ -1,0 +1,136 @@
+-- MXE-5401 is an industrial PC from Adlink (http://www.adlinktech.com/)
+-- This database defines required oid's and traps for Adlink MXE-5401 DIO port sensors used in IRCOS
+
+IRCOS-MXE5401-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosAdlink
+		FROM IRCOS-ROOT-MIB;
+		
+ircosMxe5401 MODULE-IDENTITY
+        LAST-UPDATED    "201503051155Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes Adlink MXE-5401 DIO sensors used in IRCOS devices."
+ 
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosAdlink 1 }
+
+	
+-- mxe5401 overall vars		
+
+ircosMxe5401Vars OBJECT IDENTIFIER ::= { ircosMxe5401 1 }
+
+-- mxe5401 oids
+	
+ircosMxe5401SensorAvailable OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+			notavailable(0),
+			available(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 DIO port availability"
+	::= { ircosMxe5401Vars 1 }	
+
+ircosMxe5401CaseSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			badValue(-2),
+			unknown(-1),
+			closed(0),
+			opened(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 DIO port case opened sensor"
+	::= { ircosMxe5401Vars 2 }	
+
+ircosMxe5401KnockSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			badValue(-2),
+			unknown(-1),
+			tilt(0),
+			normal(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 DIO tilt or knock sensor"
+	::= { ircosMxe5401Vars 3 }	
+
+-- traps	
+ircosMxe5401Traps OBJECT IDENTIFIER ::= { ircosMxe5401 2 }
+
+ircosMxe5401TrapsObject OBJECT IDENTIFIER ::= { ircosMxe5401Traps 0 }
+
+ircosMxe5401Unavailable NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 DIO port is unavailable"
+		::= { ircosMxe5401TrapsObject 1 }	
+		
+ircosMxe5401CaseClosed NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 case is closed"
+		::= { ircosMxe5401TrapsObject 2 }
+		
+ircosMxe5401CaseOpened NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 case is opened"
+		::= { ircosMxe5401TrapsObject 3 }
+		
+ircosMxe5401Tilt NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 knock/tilt alarm"
+		::= { ircosMxe5401TrapsObject 4 }		
+
+-- groups and conformance
+
+ircosMxe5401Conformance OBJECT IDENTIFIER ::= { ircosMxe5401 999 }
+
+ircosMxe5401Groups OBJECT IDENTIFIER ::= { ircosMxe5401Conformance 1 }
+
+ircosMxe5401ObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosMxe5401SensorAvailable,
+			ircosMxe5401CaseSensorStatus,
+			ircosMxe5401KnockSensorStatus
+		}
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 common variables group"
+		::= { ircosMxe5401Groups 1 }	
+
+ircosMxe5401TrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosMxe5401Unavailable,
+			ircosMxe5401CaseClosed,
+			ircosMxe5401CaseOpened,
+			ircosMxe5401Tilt
+		}
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 traps group"
+		::= { ircosMxe5401Groups 2 }
+		
+ircosMxe5401Compliances OBJECT IDENTIFIER ::= { ircosMxe5401Conformance 2 }
+		
+ircosMxe5401BasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"MXE-5401 Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosMxe5401ObjectsGroup, ircosMxe5401TrapsGroup }
+		::= { ircosMxe5401Compliances 1 }
+	
+END

@@ -1,0 +1,386 @@
+-- ircosVPorts is a sensor from Oem1 (http://www.oem1.ru/)
+-- This database defines required oid's and traps for ircosVPorts sensors used in IRCOS
+
+IRCOS-VPORTS-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosOem1
+		FROM IRCOS-ROOT-MIB;
+
+ircosVPorts MODULE-IDENTITY
+        LAST-UPDATED    "201510260750Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes VPorts sensors used in IRCOS devices."
+ 
+        REVISION        "201510260750Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosOem1 1 }
+
+--  VPorts overall vars		
+
+ircosVPortsOverallVars OBJECT IDENTIFIER ::= { ircosVPorts 1 }
+
+ircosVPortsSensorsCount OBJECT-TYPE
+		SYNTAX Integer32 (0..255)
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"Number of installed VPorts sensors"
+		::= { ircosVPortsOverallVars 1 }
+		
+-- VPorts sensors table		
+
+ircosVPortsSensorsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IrcosVPortsSensorsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"This table represents all installed VPorts sensors"
+		::= { ircosVPorts 10 }
+
+ircosVPortsSensorsTableEntry OBJECT-TYPE
+		SYNTAX IrcosVPortsSensorsTableEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Row of VPorts sensor values"
+		INDEX { ircosVPortsSensorIndex }
+		::= { ircosVPortsSensorsTable 1 }
+
+IrcosVPortsSensorsTableEntry ::= SEQUENCE {
+		ircosVPortsSensorIndex	Integer32,
+		ircosVPortsSensorAvailable INTEGER,
+		ircosVPortsSensorDescr DisplayString,
+		ircosVPortsCount INTEGER,
+		ircosVPortsSensor1Enabled INTEGER,
+		ircosVPortsSensor2Enabled INTEGER,
+		ircosVPortsSensor3Enabled INTEGER,
+		ircosVPortsSensor4Enabled INTEGER,
+		ircosVPortsSensor5Enabled INTEGER,
+		ircosVPortsSensor6Enabled INTEGER,
+		ircosVPortsSensor7Enabled INTEGER,
+		ircosVPortsSensor8Enabled INTEGER,
+		ircosVPortsSensor1Status INTEGER,
+		ircosVPortsSensor2Status INTEGER,
+		ircosVPortsSensor3Status INTEGER,
+		ircosVPortsSensor4Status INTEGER,
+		ircosVPortsSensor5Status INTEGER,
+		ircosVPortsSensor6Status INTEGER,
+		ircosVPortsSensor7Status INTEGER,
+		ircosVPortsSensor8Status INTEGER
+}
+
+ircosVPortsSensorIndex OBJECT-TYPE
+		SYNTAX Integer32 (1..2147483647)
+		MAX-ACCESS  not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of installed VPorts sensor"
+		::= { ircosVPortsSensorsTableEntry 1 }
+
+ircosVPortsSensorAvailable OBJECT-TYPE
+		SYNTAX INTEGER {
+			notAvailable(0),
+			available(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor availability"
+	::= { ircosVPortsSensorsTableEntry 2 }
+	
+ircosVPortsSensorDescr  OBJECT-TYPE
+		SYNTAX     DisplayString (SIZE(0..255))
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"User-defined string describing the VPorts sensor"
+	::= { ircosVPortsSensorsTableEntry 3 }
+
+ircosVPortsCount OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Number of ports of VPorts device of this type"
+	::= { ircosVPortsSensorsTableEntry 4 }
+
+ircosVPortsSensor1Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 1 enabled"
+	::= { ircosVPortsSensorsTableEntry 10 }
+
+ircosVPortsSensor2Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 2 enabled"
+	::= { ircosVPortsSensorsTableEntry 11 }
+
+ircosVPortsSensor3Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 3 enabled"
+	::= { ircosVPortsSensorsTableEntry 12 }
+
+ircosVPortsSensor4Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 4 enabled"
+	::= { ircosVPortsSensorsTableEntry 13 }
+
+ircosVPortsSensor5Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 5 enabled"
+	::= { ircosVPortsSensorsTableEntry 14 }
+
+ircosVPortsSensor6Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 6 enabled"
+	::= { ircosVPortsSensorsTableEntry 15 }
+
+ircosVPortsSensor7Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 7 enabled"
+	::= { ircosVPortsSensorsTableEntry 16 }
+
+ircosVPortsSensor8Enabled OBJECT-TYPE
+		SYNTAX INTEGER {
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 8 enabled"
+	::= { ircosVPortsSensorsTableEntry 17 }
+
+ircosVPortsSensor1Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 1 status"
+	::= { ircosVPortsSensorsTableEntry 20 }
+
+ircosVPortsSensor2Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 2 status"
+	::= { ircosVPortsSensorsTableEntry 21 }
+
+ircosVPortsSensor3Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 3 status"
+	::= { ircosVPortsSensorsTableEntry 22 }
+
+ircosVPortsSensor4Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 4 status"
+	::= { ircosVPortsSensorsTableEntry 23 }
+
+ircosVPortsSensor5Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 5 status"
+	::= { ircosVPortsSensorsTableEntry 24 }
+
+ircosVPortsSensor6Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 6 status"
+	::= { ircosVPortsSensorsTableEntry 25 }
+
+ircosVPortsSensor7Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 7 status"
+	::= { ircosVPortsSensorsTableEntry 26 }
+
+ircosVPortsSensor8Status  OBJECT-TYPE
+		SYNTAX INTEGER {
+			unknown(-1),
+			opened(0),
+			closed(1)
+		}
+		MAX-ACCESS  read-only
+		STATUS current
+		DESCRIPTION
+			"VPorts sensor 8 status"
+	::= { ircosVPortsSensorsTableEntry 27 }
+
+
+
+-- VPorts Traps
+ircosVPortsTraps OBJECT IDENTIFIER ::= { ircosVPorts 2 }
+
+ircosVPortsTrapsObject OBJECT IDENTIFIER ::= { ircosVPortsTraps 0 }
+
+ircosVPortsUnavailable NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some VPorts sensor is not responding"
+		::= { ircosVPortsTrapsObject 1 }
+
+ircosVPortsAvailable NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some VPorts sensor is available now"
+		::= { ircosVPortsTrapsObject 2 }
+
+ircosVPortsOpened NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some VPorts sensor's door is opened"
+		::= { ircosVPortsTrapsObject 3 }
+
+
+ircosVPortsClosed NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Some VPorts sensor's door is closed"
+		::= { ircosVPortsTrapsObject 4 }
+
+-- conformance and groups
+
+ircosVPortsConformance OBJECT IDENTIFIER ::= { ircosVPorts 999 }
+
+ircosVPortsGroups OBJECT IDENTIFIER ::= { ircosVPortsConformance 1 }
+
+ircosVPortsObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosVPortsSensorsCount,
+			ircosVPortsSensorAvailable,
+			ircosVPortsSensorDescr,
+			ircosVPortsCount,
+			ircosVPortsSensor1Enabled,
+			ircosVPortsSensor2Enabled,
+			ircosVPortsSensor3Enabled,
+			ircosVPortsSensor4Enabled,
+			ircosVPortsSensor5Enabled,
+			ircosVPortsSensor6Enabled,
+			ircosVPortsSensor7Enabled,
+			ircosVPortsSensor8Enabled,
+			ircosVPortsSensor1Status,
+			ircosVPortsSensor2Status,
+			ircosVPortsSensor3Status,
+			ircosVPortsSensor4Status,
+			ircosVPortsSensor5Status,
+			ircosVPortsSensor6Status,
+			ircosVPortsSensor7Status,
+			ircosVPortsSensor8Status
+		}
+		STATUS current
+		DESCRIPTION
+			"VPorts common variables group"
+		::= { ircosVPortsGroups 1 }	
+
+ircosVPortsTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosVPortsUnavailable,
+			ircosVPortsAvailable,
+			ircosVPortsOpened,
+			ircosVPortsClosed
+		}
+		STATUS current
+		DESCRIPTION
+			"VPorts traps group"
+		::= { ircosVPortsGroups 2 }
+		
+ircosVPortsCompliances OBJECT IDENTIFIER ::= { ircosVPortsConformance 2 }
+		
+ircosVPortsBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosVPortsObjectsGroup, ircosVPortsTrapsGroup }
+		::= { ircosVPortsCompliances 1 }
+		
+END

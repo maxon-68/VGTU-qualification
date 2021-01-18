@@ -1,0 +1,78 @@
+MAIN;ircosLoadProgressErrorState;Download hardware;Состояние загрузки оборудования; ;Download status hardware; ;5:1001;5:1002
+MAIN;ircosThermalState;Temperature hardware;Состояние температуры оборудования; ;Temperature status hardware; ;5:1001;5:1002
+MAIN;ircosInputVoltageState;Input voltage hardware;Состояние входного напряжения оборудования; ;Input voltage status hardware; ;5:1001;5:1002
+MAIN1;ircosAvailableState;Availability hardware;Состояние доступности оборудования; ;Availability status hardware; ;5:1001;5:1002
+T5.Temp;ircosRoot0x4;MCU temperature;Температура процессора;°C;CPU temperature;°C;5:1021;5:1022
+T5.Temp.State;ircosRoot0x4State;MCU temperature;Состояние температуры процессора; ;CPU temperature status; ;5:1021;5:1022
+T5.Current;ircosRoot0x60;Module consumption current;Потребляемый ток;мА;Module consumption current;mA;5:1017;5:1018
+T5.Current.State;ircosRoot0x60State;Module consumption current;Состояние потребления тока; ;Module consumption current status; ;5:1017;5:1018
+T5.InVolt;ircosRoot0x66;Input voltage;Входное напряжение;мВ;Input voltage;mV;5:1019;5:1020
+T5.InVolt.State;ircosRoot0x66State;Input voltage;Состояние входного напряжения; ;Input voltage status; ;5:1019;5:1020
+T5.Temp;ircosRoot0x33;Reference oven temperature;Температура термостатированного опорного генератора;°C;Reference oven temperature;°C;5:1021;5:1022
+T5.Temp.State;ircosRoot0x33State;Reference oven temperature;Состояние температуры термостатированного опорного генератора; ;Reference oven temperature status; ;5:1021;5:1022
+VG-RPUv.3.Temp;ircosDevice27x4;MCU temperature;Температура процессора;°C;CPU temperature;°C;5:1037;5:1038
+VG-RPUv.3.Temp.State;ircosDevice27x4State;MCU temperature;Состояние температуры процессора; ;CPU temperature status; ;5:1037;5:1038
+VG-RPUv.3.Current;ircosDevice27x60;Module consumption current;Потребляемый ток;мА;Module consumption current;mA;5:1031;5:1032
+VG-RPUv.3.Current.State;ircosDevice27x60State;Module consumption current;Состояние потребления тока; ;Module consumption current status; ;5:1031;5:1032
+VG-RPUv.3.InVolt;ircosDevice27x66;Input voltage;Входное напряжение;мВ;Input voltage;mV;5:1033;5:1034
+VG-RPUv.3.InVolt.State;ircosDevice27x66State;Input voltage;Состояние входного напряжения; ;Input voltage status; ;5:1033;5:1034
+VG-RPUv.3.OutVolt;ircosDevice27x68;Output voltage +1.8V;Выходное напряжение +1.8В;мВ;Output voltage +1.8V;mV;5:1035;5:1036
+VG-RPUv.3.OutVolt.State;ircosDevice27x68State;Output voltage +1.8V;Состояние выходного напряжения +1.8В; ;Output voltage +1.8V status; ;5:1035;5:1036
+VG-RPUv.3.OutVolt;ircosDevice27x56;Output voltage +3.3V;Выходное напряжение +3.3В;мВ;Output voltage +3.3V;mV;5:1035;5:1036
+VG-RPUv.3.OutVolt.State;ircosDevice27x56State;Output voltage +3.3V;Состояние выходного напряжения +3.3В; ;Output voltage +3.3V status; ;5:1035;5:1036
+VG-RPUv.3.OutVolt;ircosDevice27x58;Output voltage +5V;Выходное напряжение +5В;мВ;Output voltage +5V;mV;5:1035;5:1036
+VG-RPUv.3.OutVolt.State;ircosDevice27x58State;Output voltage +5V;Состояние выходного напряжения +5В; ;Output voltage +5V status; ;5:1035;5:1036
+VG-RPUv.3.OutVolt;ircosDevice27x75;Output voltage +6.5V;Выходное напряжение +6.5В;мВ;Output voltage +6.5V;mV;5:1035;5:1036
+VG-RPUv.3.OutVolt.State;ircosDevice27x75State;Output voltage +6.5V;Состояние выходного напряжения +6.5В; ;Output voltage +6.5V status; ;5:1035;5:1036
+VG-RPUv.3.OutVolt;ircosDevice27x80;Output voltage +22V;Выходное напряжение +22В;мВ;Output voltage +22V;mV;5:1035;5:1036
+VG-RPUv.3.OutVolt.State;ircosDevice27x80State;Output voltage +22V;Состояние выходного напряжения +22В; ;Output voltage +22V status; ;5:1035;5:1036
+BMPU.OutVolt;ircosDevice77x35;Output voltage - Channel-1;Выходное напряжение канала 1;мВ;Channel 1 output voltage;mV;5:1005;5:1006
+BMPU.OutVolt.State;ircosDevice77x35State;Output voltage - Channel-1;Состояние выходного напряжения канала 1; ;Channel 1 output voltage status; ;5:1005;5:1006
+BMPU.OutVolt;ircosDevice77x36;Output voltage - Channel-2;Выходное напряжение канала 2;мВ;Channel 2 output voltage;mV;5:1005;5:1006
+BMPU.OutVolt.State;ircosDevice77x36State;Output voltage - Channel-2;Состояние выходного напряжения канала 2; ;Channel 2 output voltage status; ;5:1005;5:1006
+BMPU.OutCurrent;ircosDevice77x43;Load current - Channel-1;Ток на выходе канала 1;мА;Channel 1 load current;mA;5:1003;5:1004
+BMPU.OutCurrent.State;ircosDevice77x43State;Load current - Channel-1;Состояние тока на выходе канала 1; ;Channel 1 load current status; ;5:1003;5:1004
+BMPU.OutCurrent;ircosDevice77x44;Load current - Channel-2;Ток на выходе канала 2;мА;Channel 2 load current;mA;5:1003;5:1004
+BMPU.OutCurrent.State;ircosDevice77x44State;Load current - Channel-2;Состояние тока на выходе канала 2; ;Channel 2 load current status; ;5:1003;5:1004
+BMPU.InVolt;ircosDevice77x37;Input voltage - Channel-1;Входное напряжение канала 1;мВ;Channel 1 input voltage;mV;5:1001;5:1002
+BMPU.InVolt.State;ircosDevice77x37State;Input voltage - Channel-1;Состояние входного напряжения канала 1; ;Channel 1 input voltage status; ;5:1001;5:1002
+BMPU.InVolt;ircosDevice77x39;Input voltage to converter - Channel-1;Входное напряжение в преобразователе канала 1;мВ;Channel 1 input voltage to converter;mV;5:1001;5:1002
+BMPU.InVolt.State;ircosDevice77x39State;Input voltage to converter - Channel-1;Состояние входного напряжения в преобразователе канала 1; ;Channel 1 input voltage to converter status; ;5:1001;5:1002
+BMPU.InVolt;ircosDevice77x38;Input voltage - Channel-2;Входное напряжение канала 2;мВ;Channel 2 input voltage;mV;5:1001;5:1002
+BMPU.InVolt.State;ircosDevice77x38State;Input voltage - Channel-2;Состояние входного напряжения канала 2; ;Channel 2 input voltage status; ;5:1001;5:1002
+BMPU.InVolt;ircosDevice77x40;Input voltage to converter - Channel-2;Входное напряжение в преобразователе канала 2;мВ;Channel 2 input voltage to converter;mV;5:1001;5:1002
+BMPU.InVolt.State;ircosDevice77x40State;Input voltage to converter - Channel-2;Состояние входного напряжения в преобразователе канала 2; ;Channel 2 input voltage to converter status; ;5:1001;5:1002
+BMPU.InVolt;ircosDevice77x66;Input voltage;Входное напряжение;мВ;Input voltage;mV;5:1001;5:1002
+BMPU.InVolt.State;ircosDevice77x66State;Input voltage;Состояние входного напряжения; ;Input voltage status; ;5:1001;5:1002
+BMPU.Temp;ircosDevice77x4;MCU temperature;Температура процессора;°C;CPU temperature;°C;5:1007;5:1008
+BMPU.Temp.State;ircosDevice77x4State;MCU temperature;Состояние температуры процессора; ;CPU temperature status; ;5:1007;5:1008
+UUR.InVolt;ircosDevice48x0;Input voltage +27V;Входное напряжение +27В;мВ;Input voltage +27V;mV;5:1025;5:1026
+UUR.InVolt.State;ircosDevice48x0State;Input voltage +27V;Состояние входного напряжения +27В; ;Input voltage +27V status; ;5:1025;5:1026
+UUR.Volt;ircosDevice48x32;Transit voltage +27V;Транслируемое напряжение +27В;мВ;Transit voltage +27V;mV;5:1029;5:1030
+UUR.Volt.State;ircosDevice48x32State;Transit voltage +27V;Состояние транслируемого напряжения +27В; ;Transit voltage +27V status; ;5:1029;5:1030
+UUR.Volt;ircosDevice48x1;Voltage +12V;Напряжение +12В;мВ;Voltage +12V;mV;5:1029;5:1030
+UUR.Volt.State;ircosDevice48x1State;Voltage +12V;Состояние напряжения +12В; ;Voltage +12V status; ;5:1029;5:1030
+UUR.Current;ircosDevice48x2;Load current;Ток нагрузки на +27В;мА;Load current +27V;mA;5:1023;5:1024
+UUR.Current.State;ircosDevice48x2State;Load current;Состояние тока нагрузки на +27В; ;Load current +27V status; ;5:1023;5:1024
+UUR.Temp;ircosDevice48x4;MCU temperature;Температура процессора;°C;CPU temperature;°C;5:1027;5:1028
+UUR.Temp.State;ircosDevice48x4State;MCU temperature;Состояние температуры процессора; ;CPU temperature status; ;5:1027;5:1028
+UUR.Temp;ircosDevice48x33;Reference oven temperature;Температура термостатированного опорного генератора;°C;Reference oven temperature;°C;5:1027;5:1028
+UUR.Temp.State;ircosDevice48x33State;Reference oven temperature;Состояние температуры термостатированного опорного генератора; ;Reference oven temperature status; ;5:1027;5:1028
+SW-IS.InVolt;ircosDevice87x0;Input voltage +27V;Входное напряжение +27В;мВ;Input voltage +27V;mV;5:1011;5:1012
+SW-IS.InVolt.State;ircosDevice87x0State;Input voltage +27V;Состояние входного напряжения +27В; ;Input voltage +27V status; ;5:1011;5:1012
+SW-IS.Volt;ircosDevice87x1;Voltage +12V;Напряжение +12В;мВ;Voltage +12V;mV;5:1015;5:1016
+SW-IS.Volt.State;ircosDevice87x1State;Voltage +12V;Состояние напряжения +12В; ;Voltage +12V status; ;5:1015;5:1016
+SW-IS.Current;ircosDevice87x2;Load current;Ток нагрузки на +27В;мА;Load current +27V;mA;5:1009;5:1010
+SW-IS.Current.State;ircosDevice87x2State;Load current;Состояние тока нагрузки на +27В; ;Load current +27V status; ;5:1009;5:1010
+SW-IS.OutVolt;ircosDevice87x56;Output voltage +3.3V;Выходное напряжение +3.3В;мВ;Output voltage +3.3V;mV;5:1013;5:1014
+SW-IS.OutVolt.State;ircosDevice87x56State;Output voltage +3.3V;Состояние выходного напряжения +3.3В; ;Output voltage +3.3V status; ;5:1013;5:1014
+SW-IS.OutVolt;ircosDevice87x57;Output voltage -3.3V;Выходное напряжение -3.3В;мВ;Output voltage -3.3V;mV;5:1013;5:1014
+SW-IS.OutVolt.State;ircosDevice87x57State;Output voltage -3.3V;Состояние выходного напряжения -3.3В; ;Output voltage -3.3V status; ;5:1013;5:1014
+GOCH4.Current;ircosDevice55x60;Module consumption current;Потребляемый ток;мА;Module consumption current;mA;5:1039;5:1040
+GOCH4.Current.State;ircosDevice55x60State;Module consumption current;Состояние потребления тока; ;Module consumption current status; ;5:1039;5:1040
+GOCH4.InVolt;ircosDevice55x66;Input voltage;Входное напряжение;мВ;Input voltage;mV;5:1041;5:1042
+GOCH4.InVolt.State;ircosDevice55x66State;Input voltage;Состояние входного напряжения; ;Input voltage status; ;5:1041;5:1042
+GOCH4.OutVolt;ircosDevice55x56;Output voltage +3.3V;Выходное напряжение +3.3В;мВ;Output voltage +3.3V;mV;5:1043;5:1044
+GOCH4.OutVolt.State;ircosDevice55x56State;Output voltage +3.3V;Состояние выходного напряжения +3.3В; ;Output voltage +3.3V status; ;5:1043;5:1044
+GOCH4.OutVolt;ircosDevice55x58;Output voltage +5V;Выходное напряжение +5В;мВ;Output voltage +5V;mV;5:1043;5:1044
+GOCH4.OutVolt.State;ircosDevice55x58State;Output voltage +5V;Состояние выходного напряжения +5В; ;Output voltage +5V status; ;5:1043;5:1044

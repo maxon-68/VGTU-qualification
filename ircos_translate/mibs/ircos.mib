@@ -1,0 +1,41 @@
+IRCOS-ROOT-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	enterprises, MODULE-IDENTITY
+		FROM SNMPv2-SMI;
+ 
+ircos MODULE-IDENTITY
+        LAST-UPDATED    "201903150852Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes IRCOS private MIB."
+
+        REVISION        "201903150852Z"
+        DESCRIPTION     "Hardware devices is now in ircosNative branch"
+
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { enterprises 44664 }
+
+-- This branch contains all tables and oid's for external sensors
+ircosSensors OBJECT IDENTIFIER ::= { ircos 1 }
+
+-- Branch for native hardware SNMP
+ircosNative OBJECT IDENTIFIER ::= { ircosSensors 1 }
+ircosCPS OBJECT IDENTIFIER ::= { ircosNative 1 }
+ircosCPS5 OBJECT IDENTIFIER ::= { ircosCPS 5 }
+
+-- All devices that can be proxified through SNMP configurator
+ircosEquicom OBJECT IDENTIFIER ::= { ircosSensors 2 }
+ircosLec OBJECT IDENTIFIER ::= { ircosSensors 3 }
+ircosEltek OBJECT IDENTIFIER ::= { ircosSensors 4 }
+ircosST OBJECT IDENTIFIER ::= { ircosSensors 5 }
+ircosApc OBJECT IDENTIFIER ::= { ircosSensors 6 }
+ircosAdlink OBJECT IDENTIFIER ::= { ircosSensors 7 }
+ircosArmada OBJECT IDENTIFIER ::= { ircosSensors 8 }
+ircosAct1 OBJECT IDENTIFIER ::= { ircosSensors 9 }
+ircosOem1 OBJECT IDENTIFIER ::= { ircosSensors 10 }
+ircosU3000 OBJECT IDENTIFIER ::= { ircosSensors 11 }
+ircosPowerSwitch OBJECT IDENTIFIER ::= { ircosSensors 12 }
+ircosCloPoDis OBJECT IDENTIFIER ::= { ircosSensors 13 }
+
+END

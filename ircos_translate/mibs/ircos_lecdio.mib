@@ -1,0 +1,136 @@
+-- Lec is an industrial PC from Lanner (http://www.lannerinc.com/)
+-- This database defines required oid's and traps for Lec Lanner DIO port sensors used in IRCOS
+
+IRCOS-LECDIO-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosLec
+		FROM IRCOS-ROOT-MIB;
+		
+ircosLecdio MODULE-IDENTITY
+        LAST-UPDATED    "201503051155Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes LEC DIO sensors used in IRCOS devices."
+ 
+        REVISION        "201503051155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosLec 1 }
+
+	
+-- lecdio overall vars		
+
+ircosLecdioVars OBJECT IDENTIFIER ::= { ircosLecdio 1 }
+
+-- lecdio oids
+	
+ircosLecdioSensorAvailable OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+			notavailable(0),
+			available(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Lec DIO port availability"
+	::= { ircosLecdioVars 1 }	
+
+ircosLecdioCaseSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			badValue(-2),
+			unknown(-1),
+			closed(0),
+			opened(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Lec DIO port case opened sensor"
+	::= { ircosLecdioVars 2 }	
+
+ircosLecdioKnockSensorStatus OBJECT-TYPE
+		SYNTAX INTEGER {
+			badValue(-2),
+			unknown(-1),
+			tilt(0),
+			normal(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"lecdio tilt or knock sensor"
+	::= { ircosLecdioVars 3 }	
+
+-- lecdio Traps	
+ircosLecdioTraps OBJECT IDENTIFIER ::= { ircosLecdio 2 }
+
+ircosLecdioTrapsObject OBJECT IDENTIFIER ::= { ircosLecdioTraps 0 }
+
+ircosLecdioUnavailable NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Lec DIO port is unavailable"
+		::= { ircosLecdioTrapsObject 1 }	
+		
+ircosLecdioCaseClosed NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Case is closed"
+		::= { ircosLecdioTrapsObject 2 }
+		
+ircosLecdioCaseOpened NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Case is opened"
+		::= { ircosLecdioTrapsObject 3 }
+		
+ircosLecdioTilt NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Knock or tilt alarm"
+		::= { ircosLecdioTrapsObject 4 }		
+
+-- groups and conformance
+
+ircosLecdioConformance OBJECT IDENTIFIER ::= { ircosLecdio 999 }
+
+ircosLecdioGroups OBJECT IDENTIFIER ::= { ircosLecdioConformance 1 }
+
+ircosLecdioObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosLecdioSensorAvailable,
+			ircosLecdioCaseSensorStatus,
+			ircosLecdioKnockSensorStatus
+		}
+		STATUS current
+		DESCRIPTION
+			"LecDio common variables group"
+		::= { ircosLecdioGroups 1 }	
+
+ircosLecdioTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosLecdioUnavailable,
+			ircosLecdioCaseClosed,
+			ircosLecdioCaseOpened,
+			ircosLecdioTilt
+		}
+		STATUS current
+		DESCRIPTION
+			"LecDio traps group"
+		::= { ircosLecdioGroups 2 }
+		
+ircosLecdioCompliances OBJECT IDENTIFIER ::= { ircosLecdioConformance 2 }
+		
+ircosLecdioBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosLecdioObjectsGroup, ircosLecdioTrapsGroup }
+		::= { ircosLecdioCompliances 1 }
+	
+END

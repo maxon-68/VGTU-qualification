@@ -1,0 +1,203 @@
+IRCOS-ACT1-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	Integer32, OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI1
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosAct1
+		FROM IRCOS-ROOT-MIB;
+		
+ircosAct1Sensor MODULE-IDENTITY
+        LAST-UPDATED    "201505061155Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes ACT-1 sensor."
+ 
+        REVISION        "201505061155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosAct1 1 }
+
+	
+-- Act-1 sensor overall vars		
+
+ircosAct1SensorVars OBJECT IDENTIFIER ::= { ircosAct1Sensor 1 }
+
+-- Act-1 oids
+	
+ircosAct1SensorAvailable OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+			notavailable(0),
+			available(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor availability"
+	::= { ircosAct1SensorVars 1 }	
+
+ircosAct1SensorReadTimeout OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor timeout"
+	::= { ircosAct1SensorVars 2 }	
+
+ircosAct1SensorTemperature OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor temperature"
+	::= { ircosAct1SensorVars 3 }	
+
+ircosAct1SensorHitSensitivity OBJECT-TYPE
+		SYNTAX Integer32 (1..127)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 hit-sensor sensitivity"
+	::= { ircosAct1SensorVars 4 }	
+
+ircosAct1SensorHitRange OBJECT-TYPE
+		SYNTAX Integer32 (1..3)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 hit-sensor range"
+	::= { ircosAct1SensorVars 5 }	
+
+ircosAct1SensorTiltSensitivity OBJECT-TYPE
+		SYNTAX Integer32 (5..60)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 tilt-sensor sensitivity"
+	::= { ircosAct1SensorVars 6 }	
+
+ircosAct1SensorTempHighThreshold OBJECT-TYPE
+		SYNTAX Integer32 (-127..127)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 temperature high threshold"
+	::= { ircosAct1SensorVars 7 }	
+
+ircosAct1SensorTempLowThreshold OBJECT-TYPE
+		SYNTAX Integer32 (-127..127)
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 temperature low threshold"
+	::= { ircosAct1SensorVars 8 }	
+
+ircosAct1SensorHitState OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+			nohit(0),
+			hit(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 hit state"
+	::= { ircosAct1SensorVars 9 }	
+
+ircosAct1SensorTiltState OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+			notilt(0),
+			tilt(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Act-1 tilt state"
+	::= { ircosAct1SensorVars 10 }	
+
+
+-- Act-1 Traps	
+
+ircosAct1SensorTraps OBJECT IDENTIFIER ::= { ircosAct1Sensor 2 }
+
+ircosAct1SensorTrapsObject OBJECT IDENTIFIER ::= { ircosAct1SensorTraps 0 }
+
+ircosAct1SensorAvailableChange NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor availability changed"
+		::= { ircosAct1SensorTrapsObject 1 }	
+
+ircosAct1SensorHit NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor hit detected"
+		::= { ircosAct1SensorTrapsObject 2 }	
+
+ircosAct1SensorTilt NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor tilt detected"
+		::= { ircosAct1SensorTrapsObject 3 }	
+
+ircosAct1SensorTempHigh NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor temperature above threshold"
+		::= { ircosAct1SensorTrapsObject 4 }	
+
+ircosAct1SensorTempLow NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"Act-1 sensor temperature below threshold"
+		::= { ircosAct1SensorTrapsObject 5 }	
+
+-- groups and conformance
+
+ircosAct1SensorConformance OBJECT IDENTIFIER ::= { ircosAct1Sensor 999 }
+
+ircosAct1SensorGroups OBJECT IDENTIFIER ::= { ircosAct1SensorConformance 1 }
+
+ircosAct1SensorObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosAct1SensorAvailable,
+			ircosAct1SensorReadTimeout,
+			ircosAct1SensorTemperature,
+			ircosAct1SensorHitSensitivity,
+			ircosAct1SensorHitRange,
+			ircosAct1SensorTiltSensitivity,
+			ircosAct1SensorTempHighThreshold,
+			ircosAct1SensorTempLowThreshold,
+			ircosAct1SensorHitState,
+			ircosAct1SensorTiltState
+		}
+		STATUS current
+		DESCRIPTION
+			"Act-1 common variables group"
+		::= { ircosAct1SensorGroups 1 }	
+
+ircosAct1SensorTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosAct1SensorAvailableChange,
+			ircosAct1SensorHit,
+			ircosAct1SensorTilt,
+			ircosAct1SensorTempHigh,
+			ircosAct1SensorTempLow
+		}
+		STATUS current
+		DESCRIPTION
+			"Act-1 traps group"
+		::= { ircosAct1SensorGroups 2 }
+		
+ircosAct1SensorCompliances OBJECT IDENTIFIER ::= { ircosAct1SensorConformance 2 }
+		
+ircosAct1SensorBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosAct1SensorObjectsGroup, ircosAct1SensorTrapsGroup }
+		::= { ircosAct1SensorCompliances 1 }
+	
+END

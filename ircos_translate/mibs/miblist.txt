@@ -1,0 +1,12 @@
+ircos.mib
+ircos_act1.mib
+ircos_apcExt2.mib
+ircos_armada.mib
+ircos_clopodis.mib
+ircos_lecdio.mib
+ircos_mxe5401.mib
+ircos_p2k.mib
+ircos_selftest.mib
+ircos_SmartPackS.mib
+ircos_u3000.mib
+ircos_vports.mib

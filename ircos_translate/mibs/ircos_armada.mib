@@ -1,0 +1,104 @@
+IRCOS-ARMADA-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY, NOTIFICATION-TYPE
+		FROM SNMPv2-SMI
+	OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	ircosArmada
+		FROM IRCOS-ROOT-MIB;
+		
+ircosArmadaLink MODULE-IDENTITY
+        LAST-UPDATED    "201903150852Z"
+        ORGANIZATION    "IRCOS"
+        CONTACT-INFO    "www.ircos.ru"
+        DESCRIPTION     "The MIB Module describes link to Armada."
+ 
+        REVISION        "201903150852Z"
+        DESCRIPTION     "Imports cleanup"
+
+        REVISION        "201505061155Z"
+        DESCRIPTION     "Basic MIB syntax"
+        ::= { ircosArmada 1 }
+
+
+-- ArmadaLink overall vars
+
+ircosArmadaLinkVars OBJECT IDENTIFIER ::= { ircosArmadaLink 1 }
+
+-- ArmadaLink oids
+
+ircosArmadaLinkState OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+                        fail(0),
+                        base(1),
+                        reserve(2),
+                        emergency(3),
+                        linkfail(4)
+
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Armada Link state"
+	::= { ircosArmadaLinkVars 1 }	
+
+ircosArmadaLinkAvailable OBJECT-TYPE
+		SYNTAX INTEGER
+		{
+			notavailable(0),
+			available(1)
+		}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Armada Link availability"
+	::= { ircosArmadaLinkVars 2 }	
+
+-- ArmadaLink Traps	
+ircosArmadaLinkTraps OBJECT IDENTIFIER ::= { ircosArmadaLink 2 }
+
+ircosArmadaLinkTrapsObject OBJECT IDENTIFIER ::= { ircosArmadaLinkTraps 0 }
+
+ircosArmadaLinkChange NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"State of link to Armada changed"
+		::= { ircosArmadaLinkTrapsObject 1 }	
+
+-- groups and conformance
+
+ircosArmadaLinkConformance OBJECT IDENTIFIER ::= { ircosArmadaLink 999 }
+
+ircosArmadaLinkGroups OBJECT IDENTIFIER ::= { ircosArmadaLinkConformance 1 }
+
+ircosArmadaLinkObjectsGroup OBJECT-GROUP
+		OBJECTS {
+			ircosArmadaLinkState,
+			ircosArmadaLinkAvailable
+		}
+		STATUS current
+		DESCRIPTION
+			"ArmadaLink common variables group"
+		::= { ircosArmadaLinkGroups 1 }	
+
+ircosArmadaLinkTrapsGroup NOTIFICATION-GROUP
+		NOTIFICATIONS {
+			ircosArmadaLinkChange
+		}
+		STATUS current
+		DESCRIPTION
+			"ArmadaLink traps group"
+		::= { ircosArmadaLinkGroups 2 }
+		
+ircosArmadaLinkCompliances OBJECT IDENTIFIER ::= { ircosArmadaLinkConformance 2 }
+		
+ircosArmadaLinkBasicCompliance MODULE-COMPLIANCE
+		STATUS current
+		DESCRIPTION
+			"Basic module compliance"
+		MODULE
+			MANDATORY-GROUPS { ircosArmadaLinkObjectsGroup, ircosArmadaLinkTrapsGroup }
+		::= { ircosArmadaLinkCompliances 1 }
+	
+END
